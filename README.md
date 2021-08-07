@@ -1,3 +1,5 @@
-# Dummy C++ Library
+# Webassembly Playground
 
-We made this very simple dummy library to investigate how to convert a C++ library into an npm package by using emscripten.
+Our goal is to find a setup to make an npm package from a C++ library. 
+
+This repo contains a C++ library (`dummy-cpp-library/`), a C++ project which uses this library (`consumer_cpp/`), and more in the future.
