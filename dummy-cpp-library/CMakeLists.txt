@@ -13,12 +13,14 @@ include(GNUInstallDirs)
 
 ## configurable/global options and variables #################################
 
-option(CMAKE_EXPORT_PACKAGE_REGISTRY "Export build tree to cmake user package registry" OFF)
+option(BUILD_SHARED_LIBS "Global flag to cause add_library() to create shared libraries if on." ON) # Builtin
+option(CMAKE_EXPORT_PACKAGE_REGISTRY "Export build tree to cmake user package registry" OFF) # Builtin
 
 set(TOP_DIR ${CMAKE_CURRENT_LIST_DIR})
 set(SRC_DIR ${TOP_DIR}/src)
 set(INCLUDE_DIR ${TOP_DIR}/include)
 
+message("BUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}")
 message("CMAKE_EXPORT_PACKAGE_REGISTRY=${CMAKE_EXPORT_PACKAGE_REGISTRY}")
 
 ## subdirectories ############################################################
@@ -62,5 +64,5 @@ export(EXPORT dummycppproject-targets
 )
 
 # If CMAKE_EXPORT_PACKAGE_REGISTRY=ON this exports the build tree to
-# user package registry (on linux: ~/.cmake/Sensana)
+# user package registry (on linux: ~/.cmake/packages/Sensana)
 export(PACKAGE Dummycppproject)

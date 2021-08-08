@@ -1,4 +1,4 @@
-add_library(libdummycppproject SHARED
+add_library(libdummycppproject
     stuff.cpp
 )
 

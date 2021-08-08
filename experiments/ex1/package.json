@@ -1,0 +1,16 @@
+{
+  "name": "ex1",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build:setup": "mkdir -p bundle",
+    "build:emscripten": "make",
+    "build:app": "cp src/index.html bundle/index.html",
+    "build": "npm run build:setup && npm run build:emscripten && npm run build:app",
+    "clean": "make clean",
+    "serve": "cd bundle && python3 -m http.server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
