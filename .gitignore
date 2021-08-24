@@ -5,3 +5,5 @@ build_*
 
 bundle
 dist
+
+/experiments/wasi-sysroot
