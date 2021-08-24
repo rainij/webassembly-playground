@@ -15,6 +15,5 @@ void wrapped_say_hello() {
 EMSCRIPTEN_BINDINGS(my_module) {
     function("wmean", &wmean);
     function("wrapped_say_hello", &wrapped_say_hello);
-    function("wrapped_say_hello", &wrapped_say_hello);
     function("the_answer_plus", &dummy_cpp_project::the_answer_plus);
 }
