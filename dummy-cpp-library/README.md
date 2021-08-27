@@ -2,6 +2,14 @@
 
 We made this very simple dummy library to investigate how to convert a C++ library into an npm package by using emscripten.
 
+## Dependencies
+
+The following dev-dependencies have to be installed:
+
+- The Meta Build System [cmake][cmake].
+- A Build System like [make][make] (install e.g. via package manager) or [ninja][ninja] (use `make` if in doubt).
+- Emscripten, e.g. via the [emsdk][emsdk].
+
 ## Build and install
 
 To build this library do the following
@@ -22,7 +30,7 @@ $ cmake --install . --prefix ~/dist
 
 ## Webassembly (Emscripten) support
 
-To use this library in a webassembly project we have to wrap most `cmake` and `make` invocations by tools from the `emsdk`. Moreover, shared libraries are not supported by webassembly which means that we have to build static archives.
+To use this library in a webassembly project we have to wrap most `cmake` and `make` invocations by tools from the `emsdk`. Moreover, in place of shared libraries one should link static libraries into the wasm project.
 
 Hence, to build the library we do
 
@@ -37,3 +45,8 @@ The installation command *must not* (TODO: reason?) be wrapped by `emsdk`. So to
 ```shell
 $ cmake --install . --prefix ../../experiments/dist
 ```
+
+[cmake]: https://cmake.org/
+[make]: https://www.gnu.org/software/make/
+[ninja]: https://ninja-build.org/
+[emsdk]: https://emscripten.org/docs/getting_started/downloads.html#installation-instructions-using-the-emsdk-recommended
