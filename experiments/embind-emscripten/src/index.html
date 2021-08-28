@@ -1,0 +1,23 @@
+<!doctype html>
+<script type="module">
+    import { mypi, wmean, wrapped_say_hello, the_answer_plus } from "./mymodule.js";
+
+    const p1 = document.getElementById('p1');
+    const p2 = document.getElementById('p2');
+    const p3 = document.getElementById('p3');
+
+    p1.innerHTML = `mypi = ${mypi}`;
+    p2.innerHTML = `wmean(...) = ${wmean(3.0, 4.0, 0.25)}`;
+    p3.innerHTML = `The answer plus one = ${the_answer_plus(1)}`;
+
+    wrapped_say_hello();
+</script>
+<body>
+    <h1>Using Emscripten with Embind</h1>
+
+    Open the console.
+
+    <p id="p1"></p>
+    <p id="p2"></p>
+    <p id="p3"></p>
+</body>
