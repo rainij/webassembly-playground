@@ -3,7 +3,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  mode: 'development',
+  mode: 'development', // 'development' or 'production'
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -11,28 +11,32 @@ module.exports = {
   },
   module: {
     rules: [
-      {
-        test: /\.html$/,
-        loader: 'html-loader',
-      },
-      // wasm files should not be processed but just be emitted and we want
-      // to have their public URL.
+      // This is a requirement of libdummy-js:
+      // import of wasm files should yield the url of the file.
       {
         test: /\.wasm$/,
-        type: "javascript/auto",
-        loader: "file-loader",
+        type: 'javascript/auto',
+        loader: 'file-loader',
+        // None of the below 'options' is essential. We just show some nice things
+        // one can do here:
         options: {
-          publicPath: "",
+          // Name can be arbitrary (possible by locateFile trick in libdummy-js):
+          name: '[name]-[md4:hash:base62:9].[ext]',
+          // Output path for wasm files can be arbitrary too:
+          outputPath: 'wasm32',
         }
       }
     ],
   },
   plugins: [
+    // This plugin takes our html template and adds the relevant script tag
+    // for our js-bundle (this is convinient because we may change the bundle name
+    // without remembering to change the script tag in the template):
     new HtmlWebpackPlugin({
       template: 'src/index.html',
     }),
   ],
-  // If libdummy-js would not use -s ENVIRONMENT=web, we had to do the following:
+  // *If* libdummy-js would not use -s ENVIRONMENT=web, we had to do the following:
   /*
   resolve: {
     fallback: {
@@ -41,7 +45,9 @@ module.exports = {
     }
   },
   */
+  // We use a feature of webpack which is currently classified as 'experimental':
   experiments: {
-    topLevelAwait: true, // Because libdummy-js needs top-level-await.
+    // Because libdummy-js needs top-level-await:
+    topLevelAwait: true,
   },
 };

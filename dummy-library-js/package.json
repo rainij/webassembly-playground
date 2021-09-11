@@ -4,8 +4,9 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "mkdir -p dist && make",
-    "clean": "rm -r ./dist",
+    "build": "make all",
+    "build:old": "make -f Makefile.old",
+    "clean": "make clean",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
