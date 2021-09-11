@@ -1,23 +1,23 @@
-import DummyJS from './dummy-js.js';
-import DummyJSModule from './dummy-js.wasm';
+// Import the glue code:
+import DummyJs from './wasm/dummy-js.js';
+// IMPORTANT: this only works if consumer really sets up its bundler to return the url
+// of the imported wasm-module.
+import DummyJsUrl from './wasm/dummy-js.wasm';
 
-console.log('[GLUE]: The URL of the wasm module of dummy-js:', DummyJSModule);
+console.log('[GLUE]: The URL of the wasm module of dummy-js:', DummyJsUrl);
 
-// The "trick" with locatFile is from: https://gist.github.com/surma/b2705b6cca29357ebea1c9e6e15684cc
+// The "trick" with locateFile is from: https://gist.github.com/surma/b2705b6cca29357ebea1c9e6e15684cc
 // Since webpack will change the name and potentially the path of the
 // `.wasm` file, we have to provide a `locateFile()` hook to redirect
 // to the appropriate URL.
 // More details: https://kripken.github.io/emscripten-site/docs/api_reference/module.html
-const promise = DummyJS({
-  // Here we provide the Module initializer function with an initial value for the *Module* object
-  // See the line containing "Module = Module || {};" in the js glue code.
-  // For documentation on locateFile see:
-  // https://emscripten.org/docs/api_reference/module.html?highlight=locatefile#Module.locateFile
+// For documentation on locateFile see:
+// https://emscripten.org/docs/api_reference/module.html?highlight=locatefile#Module.locateFile
+const promise = DummyJs({
   locateFile(path) {
-    // TODO this solution only works because we only have *one* wasm file (dummy-js.wasm) which possibly gets renamed by a bundler like webpack.
     console.log(`[GLUE]: call locatePath('${path}')`); // dummy-js.wasm
     if(path.endsWith('.wasm')) {
-      return DummyJSModule;
+      return DummyJsUrl;
     }
     return path;
   }

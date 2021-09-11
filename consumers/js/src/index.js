@@ -22,6 +22,3 @@ try {
     // C++ class resources are not garbage collected !!!
     myclass1.delete()
 }
-
-
-

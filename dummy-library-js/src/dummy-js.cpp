@@ -4,7 +4,7 @@
 
 using namespace emscripten;
 
-// A function not available in libdummy.
+// A function not available in the original libdummy.
 float wmean(float a, float b, float t) {
     return (1 - t) * a + t * b;
 }

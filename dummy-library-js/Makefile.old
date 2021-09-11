@@ -1,0 +1,51 @@
+# Note: This Makefile was used before we switched to cmake.
+# It may not work anymore, but it gives an idea what is needed to compile dummy-js.
+# *If* you want to use it make sure to activate emsdk before.
+
+# Note: using "?=" means you can override this varaible from command line like so:
+# $ make COMPILER=/path/to/my/emcc
+COMPILER ?= emcc
+# For debugging turn of OPTIMIZATION:
+OPTIMIZATION := -Os --closure 1
+#OPTIMIZATION := -O0
+
+# By default we search for libdummy just outside the repo:
+# It is necessary that this version of libdummy is build by emscripten!
+LIBDUMMY_PREFIX ?= ../../dist
+
+INCLUDE := -I $(LIBDUMMY_PREFIX)/include
+LIB := $(LIBDUMMY_PREFIX)/lib/libdummy.a
+
+# The option "-s ENVIRONMENT=web" prevents emscripten from emitting code which is not needed by a web-environment
+# (e.g. functionality for usage in *node*).
+SOPTS := \
+  -s MODULARIZE=1 \
+  -s EXPORT_ES6=1 \
+  -s ENVIRONMENT=web
+
+DIRS := dist/wasm
+
+.PHONY: all clean default
+default: dist/index.js dist/wasm/dummy-js.js
+
+all: default wat
+
+wat: dist/wasm/dummy-js.wat
+
+clean:
+	rm -rf dist
+
+$(DIRS):
+	mkdir -p $@
+
+# Creates (implicitly) the dummy-js.wasm and its cooresponding js glue code for the web:
+dist/wasm/dummy-js.js: src/dummy-js.cpp | $(DIRS)
+	$(COMPILER) $(OPTIMIZATION) --bind $(SOPTS) -o dist/wasm/dummy-js.js $< $(INCLUDE) $(LIB)
+
+# This is the entry point for a consumer of libdummy-js:
+dist/index.js: src/index.js | $(DIRS)
+	cp $< $@
+
+# Just for debugging - the textual representation of the wasm output. Needs 'wabt' to be installed.
+dist/wasm/dummy-js.wat: dist/wasm/dummy-js.js
+	wasm2wat dist/wasm/dummy-js.wasm -o $@
