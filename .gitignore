@@ -8,3 +8,6 @@ build_*
 bundle
 dist
 
+# we dont care:
+package-lock.json
+

@@ -7,6 +7,7 @@ In this example we explore using WASM *without* emscripten. We do this mainly fo
 Everything can be build by `make`:
 
 ```shell
+$ mkdir -p dist
 $ make [<targets>]
 ```
 
@@ -26,7 +27,7 @@ $ ./serve-default.sh [<PORT_NUMBER>]
 To run the `wasi` target in `wasmtime` (must be installed, e.g. from [here][wasmtime]):
 
 ```shell
-$ wasmtime bundle/main.wasm
+$ wasmtime dist/main.wasm
 ```
 
 ## Explanations
@@ -34,7 +35,7 @@ $ wasmtime bundle/main.wasm
 Compiling to wasm is supported by `clang` out of the box, since version 8 (if used together with the `llvm` compiler infrastructure). In the following an excerpt from the Makefile (with minor modifications, to be self contained):
 
 ```makefile
-bundle/bindings.wasm: src/bindings.cpp
+dist/bindings.wasm: src/bindings.cpp
 	clang++ --target=wasm32 $(OTHER_OPTIONS) -nostdlib -Wl,--no-entry -Wl,--allow-undefined -fvisibility=hidden -Wl,--export-dynamic -o $@ $^
 ```
 
@@ -48,7 +49,7 @@ Actually there are implementations of the `C/C++` standard libaries for wasm, fo
   (import "wasi_snapshot_preview1" "fd_write" (func $__wasi_fd_write (type 9)))
 ```
 
-These would lead to a missing function when running in the browser. Emscripten solves the problem by injecting a reasonable implementation of `wasi_snapshot_preview1.fd_write` into the `importObject`, the second argument, of `Webassembly.instantiateStreaming(...)`. This happens in the js glue code emitted by emscripten. Of course, if one only needs very few pieces of the standard lib, then one might implement these pieces "by hand". There is an interesting github repo which implements a [tiny stdlib for demo purposes][nano-libc]. In *our* example we only need a way to print a string to the browser's console (in js we would use `console.log`). In WASM this is a non-trivial task since Webassembly (currently) only supports integer and floating point data types. Everything else (including strings) have to be passed by raw bytes. We accomplished that by passing a function `printByteString` (see `src\mymodule.js`) as an `import` to WASM. Observe that `bundle/bindings.wat` contains a line:
+These would lead to a missing function when running in the browser. Emscripten solves the problem by injecting a reasonable implementation of `wasi_snapshot_preview1.fd_write` into the `importObject`, the second argument, of `Webassembly.instantiateStreaming(...)`. This happens in the js glue code emitted by emscripten. Of course, if one only needs very few pieces of the standard lib, then one might implement these pieces "by hand". There is an interesting github repo which implements a [tiny stdlib for demo purposes][nano-libc]. In *our* example we only need a way to print a string to the browser's console (in js we would use `console.log`). In WASM this is a non-trivial task since Webassembly (currently) only supports integer and floating point data types. Everything else (including strings) have to be passed by raw bytes. We accomplished that by passing a function `printByteString` (see `src\mymodule.js`) as an `import` to WASM. Observe that `dist/bindings.wat` contains a line:
 
 ```wasm
   (import "env" "printByteString" (func $printByteString (type 1)))
@@ -78,7 +79,7 @@ Instead of these three pieces we could just use `--export-all` to export everyth
 We already mentioned WASI. We included a very simply "Hello World"-style example for use of WASI together with the `wasmtime` runtime (any other WASM-WASI-runtime would be OK too). To build a wasmtime-executable, which prints a string to stdout and hence uses the stdlib, we added the following line to the Makefile:
 
 ```makefile
-bundle/main.wasm: src/main.cpp
+dist/main.wasm: src/main.cpp
 	clang++ --target=wasm32-unknown-wasi $(OTHER_OPTIONS) --sysroot=$(WASI_SYSROOT) -o $@ $^
 ```
 

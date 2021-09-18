@@ -1,20 +1,20 @@
-# JavaScript bindings for libdummy - `dummy-js`
+# TypeScript bindings for libdummy - `libdummy-js`
 
-`dummy-js` is a javascript wrapper library for the C++ library `dummy`. Our approach is based on emscriptens `embind`. You need `emsdk` and an emscripten generated build of `libdummy` available. See `Makefile`, `CMakeLists.txt` and the README of `libdummy` for the details.
+`dummy-js` is a typescript wrapper library for the C++ library `dummy`. Our approach is based on emscriptens `embind`. In particular you need `typescript`, `emsdk` and an emscripten generated build of `libdummy` available. See `Makefile`, `CMakeLists.txt`, `package.json` and the README of `libdummy` for the details.
 
 ## Build
 
 In order to build `dummy-js` do the following:
 
 ```shell
-$ npm run build
+$ make all
 ```
 
-Note that our top-level `Makefile` is just a very cheap *script* which has subcommands (like `configure` and `build`), which in turn call e.g. `cmake` to manage the actual build. In case you have to override some of the variables in the make-script you can invoke it directly like that:
+Note that our top-level `Makefile` is just a very cheap *script* which has subcommands (like `configure-wasm` and `build-ts`), which in turn call e.g. `cmake` and `tsc` (the typescript to javascript transpiler) to manage the actual build. In case you have to override some of the variables in the make-script you can invoke it directly like that:
 
 ```shell
-$ make configure EMSDK=/other/path/to/emsdk
-$ make build js EMSDK=/other/path/to/emsdk
+$ make configure-wasm EMSDK=/other/path/to/emsdk
+$ make build-wasm EMSDK=/other/path/to/emsdk
 ```
 
 To avoid setting the variables explicitly on each invocation you can also export each relevant variable to the shell-environment and then invoke `make` normally:
@@ -52,7 +52,7 @@ Bundler still do not support wasm files very well. This may change if ES module 
 // ...
 var wasm = "insert base64 encoding of the compiled wasm module here (via sed)";
 // ...
-var imports = /* not important here */;
+var imports = /* some importObjects */;
 // ...
 var instance = {};
 var promise = fetch('data:application/octet-stream;base64,' + wasm)
@@ -87,7 +87,6 @@ In case you wonder why `NODE` is set at all: `npm run build` spawns a shell wher
 
 ## TODO
 
-- TypeScript support.
 - Investigate if `bazel` (used by tensorflow) is a good alternative to cmake for building `libdummy-js`.
 
 [long]: https://github.com/dcodeIO/long.js/blob/4.0.0/src/long.js#L9

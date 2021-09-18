@@ -14,23 +14,23 @@ SOPTS := \
     -s EXPORT_ES6=1
 
 .PHONY: all clean default
-default: bundle/bindings.js bundle/mymodule.js bundle/index.html
+default: dist/bindings.js dist/mymodule.js dist/index.html
 
-all: default bundle/bindings.wat
+all: default dist/bindings.wat
 
 clean:
-	rm -f bundle/*
+	rm -f dist/*
 
 # Also creates a corresponding wasm file
-bundle/bindings.js: src/bindings.cpp
+dist/bindings.js: src/bindings.cpp
 	$(COMPILER) $(OPTIMIZATION) --bind $(SOPTS) -o $@ $^ $(INCLUDE) $(LIB)
 
-bundle/mymodule.js: src/mymodule.js
+dist/mymodule.js: src/mymodule.js
 	cp $^ $@
 
-bundle/index.html: src/index.html
+dist/index.html: src/index.html
 	cp $^ $@
 
 # Needs 'wabt' to be installed.
-bundle/%.wat: bundle/%.wasm
+dist/%.wat: dist/%.wasm
 	wasm2wat $^ -o $@

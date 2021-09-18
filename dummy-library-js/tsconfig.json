@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    // es6 instead of commonjs to make life easier (target and module):
+    "target": "es6",
+    "module": "es6",
+    "declaration": true,
+    "removeComments": false,
+    // needed to import the glue code:
+    "allowJs": true,
+    // To find my own type declarations in src/ (possibly not needed):
+    "typeRoots": ["./node_modules/@types", "./src/@types"],
+  },
+  // It suffices to list the entry point of our package:
+  "include": [
+    "src/index.ts"
+  ],
+  "exclude": [],
+}

@@ -18,6 +18,8 @@ try {
     myclass1.x = -123;
     console.log('myclass.x (reseted) = ', myclass1.x);
     console.log('MyClass.getCppClassName() ->', MyClass.getClassName());
+    // TypeScript detects that the following is invalid (would of course fail at runtime too):
+    //console.log('myclass.getCppClassName() ->', myclass1.getClassName());
 } finally {
     // C++ class resources are not garbage collected !!!
     myclass1.delete()

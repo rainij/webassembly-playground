@@ -5,30 +5,41 @@ Dummy_DIR ?= ../../dist/lib/cmake/dummy/
 BUILD_DIR ?= build
 DIST_DIR ?= dist
 
-.PHONY: all build configure clean default js
+CXX_SRC_DIR := src/c++
+TS_SRC_DIR := src
+WASM_DIR := $(TS_SRC_DIR)/wasm
+
+.PHONY: all build-ts build-wasm configure-ts configure-wasm clean default
 
 default: all
-all: configure build js
 
 # First step
 # - To find libdummy we have to provide the parent directory of its config: Dummy_DIR.
 # - To tell cmake to use the emsdk we provide the emsdk toolchain file.
 #   This is essentially the same what 'emscmake cmake <args>' does.
-configure:
+configure-wasm:
 	mkdir -p $(BUILD_DIR) $(DIST_DIR)
 	cmake -S . -B $(BUILD_DIR) -DDummy_DIR=$(Dummy_DIR) -DCMAKE_TOOLCHAIN_FILE=$(CMAKE_TOOLCHAIN_FILE)
 
 # Second step
 # Build the wasm file, its glue code and copy everything into the bundle:
-build: configure
-	cmake --build $(BUILD_DIR) --parallel --verbose
-	cmake --install $(BUILD_DIR) --prefix $(DIST_DIR)
+build-wasm: #configure-wasm
+	cmake --build $(BUILD_DIR) --parallel
+
+install-wasm: build-wasm
+	cmake --install $(BUILD_DIR) --prefix $(WASM_DIR)
+
+configure-ts: install-wasm
 
 # Third step
-# copy the entry point of dummy-js into the bundle:
-js: $(DIST_DIR)/index.js configure
-$(DIST_DIR)/index.js: src/index.js
-	cp $< $@
+# typescript dependencies are handled by typescript compiler tsc:
+# FIXME the copy operation for the wasm file is not very elegant.
+build-ts: #configure-ts
+	npx tsc
+	cp src/wasm/*.wasm dist/wasm/
+
+# FIXME we need serial execution here (so this breaks if user specifies make -j)
+all: configure-wasm configure-ts build-ts
 
 clean:
-	rm -rf $(BUILD_DIR) $(DIST_DIR)
+	rm -rf $(BUILD_DIR) $(DIST_DIR) $(WASM_DIR)

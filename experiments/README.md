@@ -11,4 +11,4 @@ This directory contains the following:
 **TODOs:**
 
 - WebIDL example
-- Improve embind-emscripten by showing how to use a class.
+

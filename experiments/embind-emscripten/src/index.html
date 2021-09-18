@@ -1,6 +1,6 @@
 <!doctype html>
 <script type="module">
-    import { mypi, wmean, wrapped_say_hello, the_answer_plus } from "./mymodule.js";
+    import { mypi, wmean, wrapped_say_hello, the_answer_plus, MyClass } from "./mymodule.js";
 
     const p1 = document.getElementById('p1');
     const p2 = document.getElementById('p2');
@@ -9,8 +9,22 @@
     p1.innerHTML = `mypi = ${mypi}`;
     p2.innerHTML = `wmean(...) = ${wmean(3.0, 4.0, 0.25)}`;
     p3.innerHTML = `The answer plus one = ${the_answer_plus(1)}`;
+    p4.innerHTML = `MyClass.getClassName() = ${MyClass.getClassName()}`;
 
     wrapped_say_hello();
+
+    const myclass = new MyClass(100);
+    try {
+        console.log('myclass:', myclass);
+        console.log('myclass.x = ', myclass.x);
+        myclass.incrementX();
+        console.log('myclass.x (incremented) = ', myclass.x);
+        myclass.x = -123;
+        console.log('myclass.x (reseted) = ', myclass.x);
+    } finally {
+        // C++ class resources are not garbage collected !!!
+        myclass.delete()
+    }
 </script>
 <body>
     <h1>Using Emscripten with Embind</h1>
@@ -20,4 +34,5 @@
     <p id="p1"></p>
     <p id="p2"></p>
     <p id="p3"></p>
+    <p id="p4"></p>
 </body>

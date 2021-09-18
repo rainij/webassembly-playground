@@ -26,18 +26,18 @@ SOPTS = \
 
 .PHONY: all clean default
 
-default: bundle/module.js bundle/index.html
+default: dist/module.js dist/index.html
 
-all: default bundle/module.wat
+all: default dist/module.wat
 
-bundle/%.js: src/%.cpp src/pre-js.js src/post-js.js
+dist/%.js: src/%.cpp src/pre-js.js src/post-js.js
 	$(COMPILER) $< -o $@ $(SOPTS) $(OPTIMIZATION) $(OPTIONS)
 
-bundle/%.html: src/%.html
+dist/%.html: src/%.html
 	cp $^ $@
 
-bundle/%.wat: bundle/%.wasm
+dist/%.wat: dist/%.wasm
 	wasm2wat $^ -o $@
 
 clean:
-	rm -f bundle/*
+	rm -f dist/*
