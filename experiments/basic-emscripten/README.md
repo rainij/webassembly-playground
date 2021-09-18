@@ -7,6 +7,7 @@ Here we demonstrate how to use emscripten to wrap a simple C-library. We do *not
 We build everything by using `make`:
 
 ```shell
+$ mkdir -p dist
 $ make [<targets>]
 ```
 

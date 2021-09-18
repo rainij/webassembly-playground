@@ -9,31 +9,31 @@ WASI_SYSROOT ?= ../../../wasi-sysroot
 .PHONY: all clean default wasi wat-default wat-wasi
 
 # Result can be viewed from browser. Needs clang compiler.
-default: bundle/bindings.wasm bundle/mymodule.js bundle/index.html
+default: dist/bindings.wasm dist/mymodule.js dist/index.html
 
 # Result can be run e.g. by wasmtime. Needs wasi-libc to be available.
-wasi: bundle/main.wasm
+wasi: dist/main.wasm
 
 # Creating Textual Webassembly (*.wat) for inspecting the wasm module. Needs 'wabt' to be installed.
-wat-default: bundle/bindings.wat
-wat-wasi: bundle/main.wat
+wat-default: dist/bindings.wat
+wat-wasi: dist/main.wat
 
 all: default wasi wat-default wat-wasi
 
 clean:
-	rm -f bundle/*
+	rm -f dist/*
 
-bundle/bindings.wasm: src/bindings.cpp
+dist/bindings.wasm: src/bindings.cpp
 	$(COMPILER) --target=wasm32 $(OPTIMIZATION) -nostdlib -Wl,--no-entry -Wl,--allow-undefined -fvisibility=hidden -Wl,--export-dynamic -o $@ $^
 
-bundle/main.wasm: src/main.cpp
+dist/main.wasm: src/main.cpp
 	$(COMPILER) --target=wasm32-unknown-wasi $(OPTIMIZATION) --sysroot=$(WASI_SYSROOT) -o $@ $^
 
-bundle/%.wat: bundle/%.wasm
+dist/%.wat: dist/%.wasm
 	wasm2wat $^ -o $@
 
-bundle/mymodule.js: src/mymodule.js
+dist/mymodule.js: src/mymodule.js
 	cp $^ $@
 
-bundle/index.html: src/index.html
+dist/index.html: src/index.html
 	cp $^ $@

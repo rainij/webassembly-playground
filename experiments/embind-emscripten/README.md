@@ -5,6 +5,7 @@ This is a basic example demonstrating how to use [embind][embind] to wrap C++ co
 To build this example install the `dummy` library into `../../../dist/` (see also the Makefile) and do the following
 
 ```shell
+$ mkdir -p dist
 $ make [<targets>]
 ```
 See the Makefile for possible targets.

@@ -4,10 +4,15 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   mode: 'development', // 'development' or 'production'
-  entry: './src/index.js',
+  entry: './src/index.ts',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
+  },
+  resolve: {
+    // Add `.ts` as a resolvable extension (to skip extensions in imports).
+    // '...' is short for 'for everything else use the defaults' (e.g. '.js', '.json').
+    extensions: ['.ts', '...'],
   },
   module: {
     rules: [
@@ -24,8 +29,12 @@ module.exports = {
           name: '[name]-[md4:hash:base62:9].[ext]',
           // Output path for wasm files can be arbitrary too:
           outputPath: 'wasm32',
-        }
-      }
+        },
+      },
+      {
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+      },
     ],
   },
   plugins: [

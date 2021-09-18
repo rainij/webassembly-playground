@@ -17,4 +17,12 @@ EMSCRIPTEN_BINDINGS(my_module) {
     function("wmean", &wmean);
     function("wrapped_say_hello", &wrapped_say_hello);
     function("the_answer_plus", &dummy::the_answer_plus);
+
+    class_<dummy::MyClass>("MyClass")
+        .constructor<int>()
+        .property("attachment", &dummy::MyClass::attachment)
+        .function("incrementX", &dummy::MyClass::increment_x)
+        .property("x", &dummy::MyClass::get_x, &dummy::MyClass::set_x)
+        .class_function("getClassName", &dummy::MyClass::get_class_name)
+        ;
 }
