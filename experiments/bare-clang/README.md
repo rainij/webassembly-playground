@@ -1,6 +1,6 @@
-# Experiment - Using Webassembly without Emscripten
+# Experiment - Wasm via clang and Web API
 
-In this example we explore using WASM *without* emscripten. We do this mainly for didactic reasons. In particular we learn to appriciate what emscripten acutally does for us. We also have a short glimpse at WASI (Webassembly System Interface).
+In this example we explore translating C/C++ to wasm *without* `emscripten`. Instead we *directly* invoke `clang` to compile our code. We do this mainly for didactic reasons. In particular we learn to appriciate what emscripten acutally does for us. We also have a short glimpse at WASI (Webassembly System Interface).
 
 ## Building and running the examples
 
