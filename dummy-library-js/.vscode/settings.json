@@ -1,0 +1,26 @@
+{
+    /* Due to some bug in cmake-tools we cannot rely on it (see below)
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "cmake.buildDirectory": "${workspaceFolder}/build_vscode",
+    "cmake.sourceDirectory": "${workspaceFolder}",
+    "cmake.configureArgs": [
+    ],
+    "cmake.configureSettings": {
+        "Dummy_DIR": "${workspaceFolder}/../../dist/lib/cmake/dummy",
+        // Some annoying defaults in cmake-tools make the following useless
+        // Therefore we cannot rely on cmakelists file for intellisense - sadly.
+        // Otherwise we would not need c_cpp_properties.json
+        "CMAKE_TOOLCHAIN_FILE": "${workspaceFolder}/../../.emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
+        "CMAKE_C_COMPILER:FILEPATH": "${workspaceFolder}/../../.emsdk/upstream/emscripten/emcc",
+        "CMAKE_CXX_COMPILER:FILEPATH": "${workspaceFolder}/../../.emsdk/upstream/emscripten/emcc",
+    },
+    "makefile.configurations": [
+        {
+            "name": "libdummy-js",
+            "makeArgs": [],
+        }
+    ],
+    "makefile.extensionOutputFolder": "./.vscode",
+    "makefile.phonyOnlyTargets": true,
+    */
+}

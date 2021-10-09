@@ -1,4 +1,4 @@
-EMSDK ?= $(HOME)/.emsdk
+EMSDK ?= ../../.emsdk
 CMAKE_TOOLCHAIN_FILE ?= $(EMSDK)/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake
 Dummy_DIR ?= ../../dist/lib/cmake/dummy/
 
@@ -16,7 +16,7 @@ default: all
 # First step
 # - To find libdummy we have to provide the parent directory of its config: Dummy_DIR.
 # - To tell cmake to use the emsdk we provide the emsdk toolchain file.
-#   This is essentially the same what 'emscmake cmake <args>' does.
+#   This is essentially the same what 'emcmake cmake <args>' does.
 configure-wasm:
 	mkdir -p $(BUILD_DIR) $(DIST_DIR)
 	cmake -S . -B $(BUILD_DIR) -DDummy_DIR=$(Dummy_DIR) -DCMAKE_TOOLCHAIN_FILE=$(CMAKE_TOOLCHAIN_FILE)
