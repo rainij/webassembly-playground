@@ -1,35 +1,35 @@
 {
-	"folders": [
-		{
-			"path": "dummy-library-cpp"
-		},
-		{
-			"name": "consumer/cpp",
-			"path": "consumers/cpp"
-		},
-		{
-			"name": "experiments/bare-hands",
-			"path": "experiments/bare-hands"
-		},
-		{
-			"name": "experiments/bare-clang",
-			"path": "experiments/bare-clang"
-		},
-		{
-			"name": "experiments/basic-emscripten",
-			"path": "experiments/basic-emscripten"
-		},
-		{
-			"name": "experiments/embind-emscripten",
-			"path": "experiments/embind-emscripten"
-		},
-		{
-			"path": "dummy-library-js"
-		},
-		{
-			"name": "consumers/js",
-			"path": "consumers/js"
-		}
-	],
-	"settings": {}
+    "folders": [
+        {
+            "path": "dummy-library-cpp"
+        },
+        {
+            "path": "dummy-library-js"
+        },
+        {
+            "name": "consumer/cpp",
+            "path": "consumers/cpp"
+        },
+        {
+            "name": "consumers/js",
+            "path": "consumers/js"
+        },
+        {
+            "name": "experiments/bare-hands",
+            "path": "experiments/bare-hands"
+        },
+        {
+            "name": "experiments/bare-clang",
+            "path": "experiments/bare-clang"
+        },
+        {
+            "name": "experiments/basic-emscripten",
+            "path": "experiments/basic-emscripten"
+        },
+        {
+            "name": "experiments/embind-emscripten",
+            "path": "experiments/embind-emscripten"
+        },
+    ],
+    "settings": {}
 }
